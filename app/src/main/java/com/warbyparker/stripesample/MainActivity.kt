@@ -1,7 +1,6 @@
 package com.warbyparker.stripesample
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
@@ -25,23 +24,15 @@ import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.stripe.android.PaymentConfiguration
-import com.stripe.android.Stripe
 import com.stripe.android.view.CardInputWidget
-import com.stripe.android.view.CardMultilineWidget
 import com.warbyparker.stripesample.ui.theme.MyApplicationTheme
 
 class MainActivity : ComponentActivity() {
-
-    private val stripe: Stripe by lazy {
-        Stripe(this, publishableKey = "my_key", enableLogging = true)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +45,6 @@ class MainActivity : ComponentActivity() {
                 mutableStateOf(false)
             }
             MyApplicationTheme {
-                // A surface container using the 'background' color from the theme
                 Scaffold(
                     modifier = Modifier.fillMaxSize()
                 ) {
@@ -71,7 +61,7 @@ class MainActivity : ComponentActivity() {
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Center
                         ) {
-                            Text("Show Stripe")
+                            Text("Show Stripe Input")
                             Spacer(modifier = Modifier.width(16.dp))
                             Switch(checked = showStripe.value, onCheckedChange = {
                                 showStripe.value = it
@@ -119,7 +109,6 @@ private fun StripeWidget(
                     modifier = Modifier
                         .fillMaxWidth(),
                     factory = { context ->
-                        Log.i("abcde", "factory")
                         CardInputWidget(context).apply {
                             id = R.id.warby_stripe_element_entry
                             setCardValidCallback { isValid, _ ->
@@ -130,11 +119,9 @@ private fun StripeWidget(
                         }
                     },
                     update = {
-                        Log.i("abcde", "update")
                         // do nothing
                     },
                     onRelease = {
-                        Log.i("abcde", "onRelease")
                     },
                 )
             }
